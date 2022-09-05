@@ -1,0 +1,37 @@
+{% if customer %}
+{{page.content}}
+
+{% assign secret_key = "LO82lGzmIkt6IGbUQ7kTSsa1pf9es9jg" %}
+{% assign timestamp = 'now' | date: '%s' %}
+
+{% assign querystring =   "customer_id=" | append: customer.id | append: "&ssotimestamp=" | append: timestamp %}
+ 
+
+
+
+{% assign my_secret_string = querystring | hmac_sha256: secret_key %}
+
+
+ <script>
+var shopName = window.location.hostname;
+    var queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var txid="";
+  if(urlParams.has('txid')){
+    txid=urlParams.get('txid');
+  }
+  location.href = "https://store.xecurify.com/moas/broker/login/shopifyasidp?{{querystring}}&hash={{my_secret_string}}&txid="+txid+"&shop="+shopName;
+</script>
+
+{% else %}
+<script>
+  var shopName = window.location.hostname;
+  var queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  var txid="";
+  if(urlParams.has('txid')){
+    txid=urlParams.get('txid');
+  }
+  location.href = "https://"+shopName+"/account/login?return_url=%2Fpages%2Fsso%3Ftxid%3D"+txid;
+</script>
+{% endif %}
