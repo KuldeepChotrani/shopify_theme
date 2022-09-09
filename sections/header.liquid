@@ -25,7 +25,33 @@
 <noscript>{{ 'component-menu-drawer.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-cart-notification.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-cart-items.css' | asset_url | stylesheet_tag }}</noscript>
+<script type="text/javascript">
+  
+  function updateUser(value) {
+    $.ajax({
 
+        // Our sample url to make request 
+        url: 
+`http://127.0.0.1:5000/updateBoolean/${value}`,
+
+        // Type of Request
+        type: "GET",
+
+        // Function to call when to
+        // request is ok 
+        success: function (data) {
+            var x = JSON.stringify(data);
+            console.log(x);
+        },
+
+        // Error handling 
+        error: function (error) {
+            console.log(`Error ${error}`);
+        }
+    });
+}
+updateUser();
+  </script>
 <style>
   header-drawer {
     justify-self: start;
@@ -441,7 +467,9 @@
               </li>
             {%- endfor -%}
             <a href = "https://store.xecurify.com/moas/broker/login/jwt/22722?client_id=369Xfget5gkvsGSS&redirect_uri=http://127.0.0.1:5000/">Dashboard</a></ul>
-        </nav>
+         Took the quiz? <button onclick="updateUser('True')">yes</button>
+                        <button onclick="updateUser('False')">no</button>
+          </nav>
       {%- else -%}
         <nav class="header__inline-menu">
           <ul class="list-menu list-menu--inline" role="list">
